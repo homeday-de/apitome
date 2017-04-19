@@ -10,16 +10,20 @@
       <% params.each do |param| %>
         <tr>
           <td class="name">
-            <% if param['scope'] %>
+            <% if param['scope'] && param['scope'] != 'filter' %>
               <%= "#{format_scope(param['scope'])}[#{param['name']}]" %>
             <% else %>
               <%= param['name'] %>
             <% end %>
+            <br/>
             <% if param['required'] %>
               <span class="label label-danger required"><%= t(:required, scope: :apitome) %></span>
             <% end %>
+            <% if param['scope'] == 'filter' %>
+              <span class="label label-info"><%= t(:filter, scope: :apitome) %></span>
+            <% end %>
           </td>
-          <td class="description"><%= param['description'] %></td>
+          <td class="description"><%= raw rendered_markdown(param['description'].strip_heredoc) %></td>
           <% param_extras(params).each do |extra| %>
             <td class="extra"><%= param[extra] %></td>
           <% end %>

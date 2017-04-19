@@ -7,20 +7,27 @@
           <th><%= title %></th>
         <% end %>
       </tr>
-      <% params.each do |param| %>
-        <tr>
-          <td class="name">
-            <% if param['scope'] %>
-              <%= "#{param['scope']}[#{param['name']}]" %>
-            <% else %>
+      <% 
+        grouped_params = {}
+        params.map do |param|
+          scope = param['scope'] || 'Top level'
+          grouped_params[scope] ||= []
+          grouped_params[scope] << param
+        end
+      %>
+      <% grouped_params.each do |scope, params| %>
+        <th colspan="2"><%= scope %></th>
+        <% params.each do |param| %>
+          <tr>
+            <td class="name">
               <%= param['name'] %>
+            </td>
+            <td class="description"><%= param['description'] %></td>
+            <% param_extras(params).each do |extra| %>
+              <td class="extra"><%= param[extra] %></td>
             <% end %>
-          </td>
-          <td class="description"><%= param['description'] %></td>
-          <% param_extras(params).each do |extra| %>
-            <td class="extra"><%= param[extra] %></td>
-          <% end %>
-        </tr>
+          </tr>
+        <% end %>
       <% end %>
     </table>
   </div>

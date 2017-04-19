@@ -9,6 +9,7 @@ en:
     readme: README
     request: Request
     required: required
+    filter: filter
     response_fields: Response Fields
     response: Response
     route: Route
